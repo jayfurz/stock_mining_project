@@ -3,23 +3,20 @@ import os
 import numpy as np
 import pandas as pd
 import json
+import time
 
-# if you are using a notebook, you do not need the following
+# Change the following line for notebook
 import stock_exchange_split as split
 
-
-def prepare_finetuning_data(data_obj, output_file, step=5):
+def prepare_finetuning_data(x_data, y_data, output_file, step=5):
     finetuning_data = []
 
-    x_train_data = data_obj.x_train.values
-    y_train_data = data_obj.y_train.values
+    for i in range(0, len(x_data), step):
+        x_chunk = x_data[i:i + step]
+        y_chunk = y_data[i:i + step]
 
-    for i in range(0, len(x_train_data), step):
-        x_data = x_train_data[i:i + step]
-        y_data = y_train_data[i:i + step]
-
-        prompt = json.dumps(x_data.tolist())
-        completion = json.dumps(y_data.tolist())
+        prompt = json.dumps(x_chunk.tolist())
+        completion = json.dumps(y_chunk.tolist())
 
         finetuning_data.append({"prompt": prompt, "completion": completion})
 
@@ -27,18 +24,43 @@ def prepare_finetuning_data(data_obj, output_file, step=5):
         for item in finetuning_data:
             f.write(json.dumps(item) + "\n")
 
-prepare_finetuning_data(split.nasdaq_train_test, "nasdaq_finetuning_data.jsonl")
-prepare_finetuning_data(split.nyse_train_test, "nyse_finetuning_data.jsonl")
+# Replace 'split.nasdaq_x_train' and 'split.nyse_y_train' with the appropriate variables
+prepare_finetuning_data(split.nasdaq_x_train, split.nasdaq_y_train, "nasdaq_finetuning_data.jsonl")
+prepare_finetuning_data(split.nyse_x_train, split.nyse_y_train, "nyse_finetuning_data.jsonl")
 
+def fine_tune_gpt_model():
+    # Set your API key
+    openai.api_key = os.environ["OPENAI_API_KEY"]
 
-# Upload the formatted training data to GPT (not ready)
-model_name = "ada"
-openai.api_key = os.environ["OPENAI_API_KEY"]
-#openai.FineTune.create(
-#    engine=model_name,
-#    prompt=formatted_train_data,
-#    max_tokens=1024,
-#    n=1,
-#    stop=None,
-#    temperature=0.5,
-#)
+    # Upload the NASDAQ dataset
+    with open("nasdaq_finetuning_data.jsonl") as f:
+    nasdaq_dataset = openai.Dataset.create(file=f, purpose="fine-tuning")
+    
+    # Upload the formatted training data to GPT (not ready)
+    # Set the model to fine-tune
+    base_model = "text-davinci-002"
+
+    # Fine-tune the model using the NASDAQ dataset
+    fine_tuning_job = openai.FineTune.create(
+        model=base_model,
+        dataset_id=nasdaq_dataset.id,
+        n_epochs=1, # Set the number of epochs for fine-tuning
+        max_tokens=1024, # Set the maximum number of tokens per example
+        learning_rate=0.0001, # Set the learning rate
+        batch_size=4, # Set the batch size
+    )
+
+    # Check the status of the fine-tuning job
+    while True:
+        status = openai.FineTune.get(fine_tuning_job.id).status
+
+        if status == "succeeded":
+            print("Fine-tuning completed successfully")
+            break
+        elif status == "failed":
+            print("Fine-tuning failed")
+            break
+        else:
+            print("Fine-tuning in progress...")
+
+        time.sleep(60) # Check the status every 60 seconds
