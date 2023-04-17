@@ -81,7 +81,7 @@ def fine_tune_gpt_model(train_data_path):
 def evaluate_model(model_id, x_test, y_test):
     """This takes the finetuned model that was used before, and then uses the openai Completion
     to get responses from x_test prompts. Then it takes the response choices and compares it to y_test.
-    The function then 
+    The function then saves the prompts and responses to a json file.
     Example call:
     mean_absolute_difference = evaluate_model(model_id, x_test, y_test)
     print(f"Accuracy of the fine-tuned model: {mean_absolute_difference:.4f}")"""
@@ -89,6 +89,7 @@ def evaluate_model(model_id, x_test, y_test):
 
     total_absolute_difference = 0
     total_values = 0
+    results = []
 
     for x, y_true_list in zip(x_test, y_test):
         prompt = json.dumps([x])
@@ -101,12 +102,19 @@ def evaluate_model(model_id, x_test, y_test):
             temperature=0.5,
         )
 
-        y_pred_list = json.loads(response.choices[0].text.strip())
+        response_text = response.choices[0].text.strip()
+        y_pred_list = json.loads(response_text)
 
         for y_pred, y_true in zip(y_pred_list, y_true_list):
             absolute_difference = abs(y_pred - y_true)
             total_absolute_difference += absolute_difference
             total_values += 1
 
+        results.append({"prompt": prompt, "response": response_text})
+
     mean_absolute_difference = total_absolute_difference / total_values
+
+    with open("evaluation_results.json", "w") as f:
+        json.dump(results, f)
+
     return mean_absolute_difference
