@@ -5,12 +5,12 @@ class DataPreprocessor:
     def __init__(self, data):
         self.data = data
 
-    def generate_sequences(self, sequence_length):
+    def generate_sequences(self, sequence_length=5):
         x_data, y_data = [], []
 
-        for i in range(len(self.data) - sequence_length):
+        for i in range(0,len(self.data) - sequence_length,sequence_length):
             x_data.append(self.data.iloc[i : i + sequence_length - 1].values)
-            y_data.append(self.data.iloc[i + sequence_length - 1]["Percent_Change"])
+            y_data.append(self.data.iloc[i + sequence_length - 1].values)
 
         return np.array(x_data), np.array(y_data)
 
