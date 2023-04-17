@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import json
 import time
+import datetime
 
 # Change the following line for notebook
 import stock_exchange_split as split
@@ -114,7 +115,10 @@ def evaluate_model(model_id, x_test, y_test):
 
     mean_absolute_difference = total_absolute_difference / total_values
 
-    with open("evaluation_results.json", "w") as f:
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"evaluation_results_{timestamp}.json"
+
+    with open(filename, "w") as f:
         json.dump(results, f)
 
     return mean_absolute_difference
