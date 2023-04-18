@@ -20,11 +20,8 @@ nasdaq_data = pd.read_csv("nasdaq_data.csv")
 nyse_data = pd.read_csv("nyse_data.csv")
 
 # Filter out any rows where the open, close, high, and low values are the same
-nasdaq_data = nasdaq_data[
-    (nasdaq_data["Open"] != nasdaq_data["Close"])
-    & (nasdaq_data["Open"] != nasdaq_data["High"])
-    & (nasdaq_data["Open"] != nasdaq_data["Low"])
-]
+nasdaq_data = nasdaq_data[int(len(nasdaq_data)/2):]
+
 nyse_data = nyse_data[
     (nyse_data["Open"] != nyse_data["Close"])
     & (nyse_data["Open"] != nyse_data["High"])
