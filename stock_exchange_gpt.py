@@ -105,7 +105,7 @@ def evaluate_model(model_id, x_test, y_test):
     total_values = 0
     results = []
 
-    for x, y_true_list in zip(x_test[0:5], y_test[0:5]):
+    for x, y_true_list in zip(x_test, y_test):
         prompt = json.dumps(x.tolist())
         print("The Prompt is: ", prompt)
         response = openai.Completion.create(
