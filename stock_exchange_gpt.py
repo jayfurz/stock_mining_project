@@ -117,13 +117,15 @@ def evaluate_model(model_id, x_test, y_test):
             temperature=0.5,
         )
 
+        # "Crop" the output to make sure it is only one day
         response_text = response.choices[0].text.strip().split(']')[0]+']'
         y_pred_list = json.loads(response_text)
         y_true_list = y_true_list.tolist()
         print("The response: ", y_pred_list)
+        print("The actual data: ", y_true_list)
         iter = 0
         for y_pred, y_true in zip(y_pred_list, y_true_list):
-            if iter is 0:
+            if iter == 0:
                 delta_days = days_between(y_pred, y_true)
                 iter = 1
             else:
@@ -132,15 +134,15 @@ def evaluate_model(model_id, x_test, y_test):
                 total_values += 1
 
 
-        results.append({"prompt": prompt, "response": response_text})
+        results.append({"prompt": prompt, "response": response_text, "actual": json.dumps(y_true_list)})
 
     mean_absolute_difference = total_absolute_difference / total_values
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"evaluation_results_{timestamp}.json"
-
+    filename = f"dump/evaluation_results_{timestamp}.json"
+    json_data = json.dumps(results, indent=4)
     with open(filename, "w") as f:
-        json.dump(results, f)
+        f.write(json_data)
 
     return mean_absolute_difference
 
