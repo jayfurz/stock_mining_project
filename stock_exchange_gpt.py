@@ -111,7 +111,7 @@ def evaluate_model(model_id, x_test, y_test):
         response = openai.Completion.create(
             engine=model_id,
             prompt=prompt,
-            max_tokens=80,  # Increase max_tokens to ensure the whole list is returned
+            max_tokens=800,  # Increase max_tokens to ensure the whole list is returned
             n=1,
             stop=None,
             temperature=0.5,

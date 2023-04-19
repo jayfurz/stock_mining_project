@@ -1,11 +1,11 @@
 import pandas as pd
 
 # Load the stock market dataset
-stock_data = pd.read_csv("indexData.csv")
+stock_data = pd.read_csv("IXIC.csv")
 
 # Split the dataset into two separate dataframes for the NASDAQ and NYSE indices
 nasdaq_data = stock_data[stock_data["Index"] == "IXIC"]
-nyse_data = stock_data[stock_data["Index"] == "NYA"]
+nyse_data = stock_data[stock_data["Index"] == "IXIC"]
 
 # Drop the 'Index' column from both dataframes
 nasdaq_data = nasdaq_data.drop("Index", axis=1)
