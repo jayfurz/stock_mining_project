@@ -1,0 +1,17 @@
+_HiStOrY_V2_
+quit()
+import\040bokeh
+quit()
+import\040pandas\040as\040pd
+ixic\040=\040pd.read_csv("^IXIC.csv")
+ixic["Percent_Change"]\040=\040(\040ixic["Close"]\040-\040ixic["Open"])\040/\040ixic["Open"]
+ixic["Total_Change"]\040=\040ixic["Close"]\040-\040ixic["Open"]
+ixic.head()
+len(ixic)
+ixic_short\040=\040ixic[-15:]
+ixic_short.head()
+ixic_short.to_csv('ixic_short.csv',\040index=False)
+%save\040my_session
+import\040readline
+readline.write_history_file('~/Desktop')
+readline.write_history_file('~\134Desktop')
