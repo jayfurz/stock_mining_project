@@ -1,56 +1,56 @@
 _HiStOrY_V2_
 quit()
-import\040bokeh
+import bokeh
 quit()
-import\040pandas\040as\040pd
-ixic\040=\040pd.read_csv("^IXIC.csv")
-ixic["Percent_Change"]\040=\040(\040ixic["Close"]\040-\040ixic["Open"])\040/\040ixic["Open"]
-ixic["Total_Change"]\040=\040ixic["Close"]\040-\040ixic["Open"]
+import pandas as pd
+ixic = pd.read_csv("^IXIC.csv")
+ixic["Percent_Change"] = ( ixic["Close"] - ixic["Open"]) / ixic["Open"]
+ixic["Total_Change"] = ixic["Close"] - ixic["Open"]
 ixic.head()
 len(ixic)
-ixic_short\040=\040ixic[-15:]
+ixic_short = ixic[-15:]
 ixic_short.head()
-ixic_short.to_csv('ixic_short.csv',\040index=False)
-%save\040my_session
-import\040readline
+ixic_short.to_csv('ixic_short.csv', index=False)
+%save my_session
+import readline
 readline.write_history_file('~/Desktop')
 readline.write_history_file('~\134Desktop')
-prompt_data\040=\040ixic_short.values
+prompt_data = ixic_short.values
 prompt_data.head
-print\040prompt_data
+print prompt_data
 print(prompt_data)
-prompt_json\040=\040json.dumps(prompt_data)
-import\040json
-prompt_json\040=\040json.dumps(prompt_data)
-prompt_json\040=\040json.dumps(prompt_data.tolist())
-with\040open("current_ixic_data.json",\040"w")\040as\040f:
-\040\040\040\040f.write(prompt_json)
-open.api_key\040=\040os.environ["OPENAI_API_KEY"]
-import\040os
-open.api_key\040=\040os.environ["OPENAI_API_KEY"]
-openai.api_key\040=\040os.environ["OPENAI_API_KEY"]
-import\040openai
-openai.api_key\040=\040os.environ["OPENAI_API_KEY"]
+prompt_json = json.dumps(prompt_data)
+import json
+prompt_json = json.dumps(prompt_data)
+prompt_json = json.dumps(prompt_data.tolist())
+with open("current_ixic_data.json", "w") as f:
+    f.write(prompt_json)
+open.api_key = os.environ["OPENAI_API_KEY"]
+import os
+open.api_key = os.environ["OPENAI_API_KEY"]
+openai.api_key = os.environ["OPENAI_API_KEY"]
+import openai
+openai.api_key = os.environ["OPENAI_API_KEY"]
 print(prompt_json)
-\040\040\040\040model_id\040=\040os.environ["SECOND_TRAINED_MODEL"]
-model_id\040=\040os.environ["SECOND_TRAINED_MODEL"]
-response\040=\040openai.Completion.create(
-\011engine=model_id,
-\011prompt=prompt_json,
-\011max_tokens=800,
-\011n=1,
-\011stop=None,
-\011temperature=0.5,
+    model_id = os.environ["SECOND_TRAINED_MODEL"]
+model_id = os.environ["SECOND_TRAINED_MODEL"]
+response = openai.Completion.create(
+    engine=model_id,
+    prompt=prompt_json,
+    max_tokens=800,
+    n=1,
+    stop=None,
+    temperature=0.5,
 )
 response
-response_text\040=\040response.choices[0].text.strip()
-results.append({"prompt":prompt_json,\040"response":\040response_text})
-results\040=\040[]
-results.append({"prompt":prompt_json,\040"response":\040response_text})
-filename\040=\040"predictions/ixic_tues_apr_18_23.json"
-json_data\040=\040json.dumps(results,\040indent\040=\0404)
-with\040open(filename,\040"w")\040as\040f:
-\011f.write(json_data)
-with\040open(filename,\040"w")\040as\040f:
-\011f.write(json_data)
+response_text = response.choices[0].text.strip()
+results.append({"prompt":prompt_json, "response": response_text})
+results = []
+results.append({"prompt":prompt_json, "response": response_text})
+filename = "predictions/ixic_tues_apr_18_23.json"
+json_data = json.dumps(results, indent = 4)
+with open(filename, "w") as f:
+    f.write(json_data)
+with open(filename, "w") as f:
+    f.write(json_data)
 readline.write_history_file('predictions/interactive_apr_18_23_ixic')
