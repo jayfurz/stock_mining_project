@@ -129,3 +129,20 @@ dmypy.json
 .pyre/
 .DS_Store/
 .DS_Store
+
+# Project-specific files
+# API Keys and secrets (use environment variables instead)
+*.key
+secrets.json
+
+# Large data files 
+*.csv
+*.jsonl
+
+# Model evaluation results
+dump/
+evaluation_results_*.json
+
+# IDE files
+.vscode/
+.idea/

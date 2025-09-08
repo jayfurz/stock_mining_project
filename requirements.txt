@@ -1,0 +1,44 @@
+# GPT-Based Stock Market Prediction System
+# Requirements for CSUN Data Mining Master's Course Project
+# 
+# Core Dependencies for Stock Market Data Processing and GPT Fine-tuning
+
+# Data manipulation and analysis
+pandas>=1.3.0
+
+# Numerical computations and array operations
+numpy>=1.21.0
+
+# OpenAI API for GPT model fine-tuning and inference
+# Note: This requires an OpenAI API key set as OPENAI_API_KEY environment variable
+openai>=0.27.0
+
+# Machine learning evaluation metrics
+scikit-learn>=1.0.0
+
+# Date and time handling (built-in, but listed for completeness)
+# datetime - included with Python standard library
+
+# JSON data handling (built-in, but listed for completeness) 
+# json - included with Python standard library
+
+# Operating system interface (built-in, but listed for completeness)
+# os - included with Python standard library
+
+# Time-related functions (built-in, but listed for completeness)
+# time - included with Python standard library
+
+# File path pattern matching (built-in, but listed for completeness)
+# glob - included with Python standard library
+
+# Development and Testing (Optional)
+# Uncomment if you want to run tests or development tools
+# pytest>=6.0.0
+# jupyter>=1.0.0
+# matplotlib>=3.3.0  # For data visualization
+# seaborn>=0.11.0    # For enhanced plotting
+
+# Production Deployment (Optional)
+# Uncomment if deploying to production
+# gunicorn>=20.0.0   # WSGI server
+# flask>=2.0.0       # Web framework (if building API)
